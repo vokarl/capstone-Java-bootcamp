@@ -4,3 +4,4 @@ ADD backend/target/track-your-health.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
 
 
+
