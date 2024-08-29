@@ -17,7 +17,7 @@ public class PressureReadingController {
 
 
     @GetMapping
-    List<PressureReading> getAllReading(){
+    List<PressureReading> getAllReadings(){
         return pressureReadingService.findAllReadings();
     }
 }
