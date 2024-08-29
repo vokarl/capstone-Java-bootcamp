@@ -25,6 +25,7 @@ class PressureReadingServiceTest {
         List<PressureReading> actual = pressureReadingService.findAllReadings();
         //THEN
         verify(pressureReadingRepository).findAll();
-        assertEquals(pressureReadings, actual);
+        List<PressureReading> expected = List.of(new PressureReading( "8-6-23","12:30", 70, 80, 60), new PressureReading( "5-3-24" , "11:34", 80, 85, 67), new PressureReading( "15-3-24" , "10:34", 80, 85, 67));
+        assertEquals(expected, actual);
     }
 }
