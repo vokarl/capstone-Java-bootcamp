@@ -11,13 +11,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/blood-pressure")
-public class PressureReadingsController {
-    private final PressureReadingsService pressureReadingsService;
+public class PressureReadingController {
+    private final PressureReadingService pressureReadingService;
 
 
 
     @GetMapping
-    List<PressureReadings> getAllReadings(){
-        return pressureReadingsService.findAllReadings();
+    List<PressureReading> getAllReading(){
+        return pressureReadingService.findAllReadings();
     }
 }

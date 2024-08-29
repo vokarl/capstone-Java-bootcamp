@@ -1,9 +1,9 @@
 package de.trackyourhealth.backend;
 
-import java.time.LocalDateTime;
 
-public record PressureReadings(
-        LocalDateTime pressureTimestamp,
+public record PressureReading(
+        String date,
+        String time,
         int systolic,
         int diastolic,
         int bpm

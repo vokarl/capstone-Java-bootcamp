@@ -14,12 +14,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class PressureReadingsControllerTest {
+class PressureReadingControllerTest {
 
     @Autowired
     MockMvc mockMvc;
     @Autowired
-    PressureReadingsRepository pressureReadingsRepository;
+    PressureReadingRepository pressureReadingRepository;
     @DirtiesContext
     @Test
     void getAllReadings() throws Exception {
