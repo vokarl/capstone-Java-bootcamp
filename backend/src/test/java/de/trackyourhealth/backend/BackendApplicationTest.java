@@ -3,11 +3,13 @@ package de.trackyourhealth.backend;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+
+
 @SpringBootTest
-class BackendApplicationTests {
+class BackendApplicationTest {
 
     @Test
-    void contextLoads() {
-    }
+    void contextLoads()  {
 
+    }
 }
