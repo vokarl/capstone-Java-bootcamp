@@ -1,9 +1,7 @@
 package de.trackyourhealth.backend;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,4 +18,10 @@ public class PressureReadingController {
     List<PressureReading> getAllReadings(){
         return pressureReadingService.findAllReadings();
     }
+
+    @PostMapping
+    public PressureReading addPressureReading(@RequestBody NewPressureReading newPressureReading){
+        return pressureReadingService.savePressureReading(newPressureReading);
+    }
+
 }
