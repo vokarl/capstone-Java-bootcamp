@@ -20,8 +20,8 @@ public class PressureReadingController {
     }
 
     @PostMapping
-    public PressureReading addPressureReading(@RequestBody NewPressureReading newPressureReading){
-        return pressureReadingService.savePressureReading(newPressureReading);
+    public PressureReading addPressureReading(@RequestBody PressureReading pressureReading){
+        return pressureReadingService.savePressureReading(pressureReading);
     }
 
 }

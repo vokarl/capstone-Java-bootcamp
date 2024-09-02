@@ -7,15 +7,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class PressureReadingService {
+
     private final PressureReadingRepository pressureReadingRepository;
-    private final IdService idService;
 
     public List<PressureReading> findAllReadings() {
         return pressureReadingRepository.findAll();
     }
-    public PressureReading savePressureReading(NewPressureReading newPressureReading) {
-        PressureReading pressureReading = new PressureReading(idService.randomId(), newPressureReading.date(), newPressureReading.time(), newPressureReading.systolic(), newPressureReading.diastolic(), newPressureReading.bpm());
-
+    public PressureReading savePressureReading(PressureReading pressureReading) {
         return pressureReadingRepository.save(pressureReading);
     }
 }
