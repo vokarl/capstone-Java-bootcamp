@@ -1,14 +1,10 @@
 import {PressureReading} from "../models/PressureReading.ts";
 type PressureCardProps ={
     pressureReading: PressureReading;
-
+    fetchData: () => void;
 }
 
 export default function PressureCard({pressureReading}: Readonly<PressureCardProps>){
-
-
-
-
         return(
             <div>
                 <div>
