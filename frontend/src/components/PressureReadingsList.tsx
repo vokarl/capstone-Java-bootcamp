@@ -2,6 +2,9 @@ import {useEffect, useState} from "react";
 import {PressureReading} from "../models/PressureReading.ts";
 import  axios from "axios";
 import PressureCard from "./PressureCard.tsx";
+import AddPressureForm from "./AddPressureReading.tsx";
+
+
 
 
 export default function PressureReadigsList(){
@@ -20,9 +23,14 @@ useEffect(()=>{
     fetchData()
 },[]);
 
+    const handlePressureReading = (newReading: PressureReading)=> {
+        setPressureReadings(prevReadings=> [...prevReadings, newReading]);
+    }
+
     return(
         <>
         <h2>Blood Pressure Values</h2>
+            <AddPressureForm onAddPressureForm={handlePressureReading}/>
             <div>
                 {pressureReadings.map(pressureReading=>(
                     <li key={pressureReading.pressureId}>

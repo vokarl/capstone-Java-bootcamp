@@ -5,10 +5,6 @@ type PressureCardProps ={
 }
 
 export default function PressureCard({pressureReading}: Readonly<PressureCardProps>){
-
-
-
-
         return(
             <div>
                 <div>
