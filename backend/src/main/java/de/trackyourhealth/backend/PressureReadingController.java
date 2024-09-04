@@ -18,6 +18,10 @@ public class PressureReadingController {
     List<PressureReading> getAllReadings(){
         return pressureReadingService.findAllReadings();
     }
+    @GetMapping("{id}")
+    public PressureReading getPressureReadingById(@PathVariable String id){
+        return pressureReadingService.findPressureReadingById(id);
+    }
 
     @PostMapping
     public PressureReading addPressureReading(@RequestBody PressureReading pressureReading){

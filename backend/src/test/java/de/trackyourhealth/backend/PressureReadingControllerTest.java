@@ -61,6 +61,27 @@ class PressureReadingControllerTest {
                 .andExpect(jsonPath("$.diastolic").value("80"))
                 .andExpect(jsonPath("$.bpm").value("70"));
     }
+    @Test
+    @DirtiesContext
+    void getPressureReadingById() throws Exception {
+        //GIVEN
+        PressureReading newPressureReading = new PressureReading("1","22.1.12","12:30",120,80,77);
+        pressureReadingRepository.save(newPressureReading);
+        //WHEN
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/blood-pressure/1"))
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                    {
+                         "id": "1",
+                         "date": "22.1.12",
+                         "time": "12:30",
+                         "systolic": 120,
+                         "diastolic": 80,
+                         "bpm": 77
+                         }
+                   """));
+    }
 
 
 }

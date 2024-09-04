@@ -2,6 +2,7 @@ package de.trackyourhealth.backend;
 
 import org.junit.jupiter.api.Test;
 import java.util.List;
+import java.util.Optional;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,5 +41,17 @@ class PressureReadingServiceTest {
         //THEN
         verify(pressureReadingRepository).save(newPressureReading);
         assertEquals(newPressureReading, actual);
+    }
+    @Test
+    void findPressureReadingById(){
+        //GIVEN
+        String id = "1";
+        PressureReading pressureReading = new PressureReading("1","22.1.12", "12:20", 120,70,77);
+        //WHEN
+        when(pressureReadingRepository.findById(id)).thenReturn(Optional.of(pressureReading));
+        PressureReading actual = pressureReadingService.findPressureReadingById(id);
+        //THEN
+        verify(pressureReadingRepository).findById(id);
+        assertEquals(pressureReading, actual);
     }
 }
