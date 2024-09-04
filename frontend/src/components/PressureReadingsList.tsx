@@ -3,6 +3,7 @@ import {PressureReading} from "../models/PressureReading.ts";
 import  axios from "axios";
 import PressureCard from "./PressureCard.tsx";
 import AddPressureForm from "./AddPressureReading.tsx";
+import GetPressureReadingById from "./GetPressureReadingById.tsx";
 
 
 
@@ -31,6 +32,7 @@ useEffect(()=>{
         <>
         <h2>Blood Pressure Values</h2>
             <AddPressureForm onAddPressureForm={handlePressureReading}/>
+            <GetPressureReadingById readings={pressureReadings}/>
             <div>
                 {pressureReadings.map(pressureReading=>(
                     <li key={pressureReading.pressureId}>
