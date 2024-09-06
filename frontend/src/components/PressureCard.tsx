@@ -1,4 +1,5 @@
 import {PressureReading} from "../models/PressureReading.ts";
+import {Card, CardContent, Typography} from "@mui/material";
 
 type PressureCardProps ={
     pressureReading: PressureReading;
@@ -9,24 +10,25 @@ export default function PressureCard({pressureReading}: Readonly<PressureCardPro
 
 
     return (
-        <div>
-            <div>
-                <p>Date: {pressureReading.date}</p>
-
-                <p>Time: {pressureReading.time}</p>
-
-            </div>
-            <div>
-                <p>Systolic: {pressureReading.systolic}</p>
-
-                <p>Diastolic: {pressureReading.diastolic}</p>
-
-
-                <p>BPM: {pressureReading.bpm}</p>
-
-
-            </div>
-        </div>
+        <Card sx={{ mb: 2 }}>
+            <CardContent>
+                <Typography variant="h6" component="div">
+                    Date: {pressureReading.date}
+                </Typography>
+                <Typography variant="body1">
+                    Time: {pressureReading.time}
+                </Typography>
+                <Typography variant="body1">
+                    Systolic: {pressureReading.systolic}
+                </Typography>
+                <Typography variant="body1">
+                    Diastolic: {pressureReading.diastolic}
+                </Typography>
+                <Typography variant="body1">
+                    BPM: {pressureReading.bpm}
+                </Typography>
+            </CardContent>
+        </Card>
 
     )
 }

@@ -2,8 +2,9 @@ import {useEffect, useState} from "react";
 import {PressureReading} from "../models/PressureReading.ts";
 import  axios from "axios";
 import PressureCard from "./PressureCard.tsx";
-import AddPressureForm from "./AddPressureReading.tsx";
+import AddPressureForm from "./PressureForm.tsx";
 import GetPressureReadingById from "./GetPressureReadingById.tsx";
+import {Box, FormControl} from "@mui/material";
 
 
 
@@ -31,7 +32,11 @@ useEffect(()=>{
     return(
         <>
         <h2>Blood Pressure Values</h2>
-            <AddPressureForm onAddPressureForm={handlePressureReading}/>
+            <Box sx={{ mb: 6 }}>
+     <FormControl fullWidth >
+         <AddPressureForm onAddPressureForm={handlePressureReading}/>
+     </FormControl>
+            </Box>
             <GetPressureReadingById readings={pressureReadings}/>
             <div>
                 {pressureReadings.map(pressureReading=>(
