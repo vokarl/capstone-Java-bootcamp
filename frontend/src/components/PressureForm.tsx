@@ -13,7 +13,6 @@ interface PressureFormProps {
 
 export default function PressureForm({ onAddPressureForm  }: Readonly<PressureFormProps>) {
     const [date, setDate] = useState<Dayjs | null>(null);
-    const [time, setTime] = useState<string>("");
     const [systolic, setSystolic] = useState<number | undefined>(undefined);
     const [diastolic, setDiastolic] = useState<number | undefined>(undefined);
     const [bpm, setBpm] = useState<number | undefined>(undefined);
@@ -21,13 +20,13 @@ export default function PressureForm({ onAddPressureForm  }: Readonly<PressureFo
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
 
-        if (!date || time === "" || systolic === undefined || diastolic === undefined || bpm === undefined) {
+        if (!date || systolic === undefined || diastolic === undefined || bpm === undefined) {
             return; 
         }
+        const dateTimeString = date.format("YYYY-MM-DDTHH:mm:ss");
         const newReading = {
             pressureId: '',
-            date,
-            time: date.format("HH:mm"),
+            date: dateTimeString,
             systolic,
             diastolic,
             bpm,
@@ -37,7 +36,6 @@ export default function PressureForm({ onAddPressureForm  }: Readonly<PressureFo
             .then(response => {
                 onAddPressureForm(response.data);
                 setDate(null);
-                setTime('');
                 setSystolic(undefined);
                 setDiastolic(undefined);
                 setBpm(undefined);
@@ -50,6 +48,8 @@ export default function PressureForm({ onAddPressureForm  }: Readonly<PressureFo
     return (
         <form onSubmit={handleSubmit} style={{display: "flex", flexDirection: "row", gap: "6px"}}>
             <StyledDateBox>
+                <StyledButton type="submit" variant="contained" color="primary" size="small">
+                    +</StyledButton>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                <DateTimePicker
                     label="Date"
@@ -57,9 +57,7 @@ export default function PressureForm({ onAddPressureForm  }: Readonly<PressureFo
                     onChange={(newValue) => setDate(newValue)}
                         format="DD/MM/YYYY HH:mm"
                     ampm={false}
-
-            />
-                    </LocalizationProvider>
+               /></LocalizationProvider>
             </StyledDateBox>
             <StyledBox>
             <TextField
@@ -90,10 +88,7 @@ export default function PressureForm({ onAddPressureForm  }: Readonly<PressureFo
             placeholder="Bpm"
             required
         />  </StyledBox>
-                <StyledButton type="submit" variant="contained" color="primary" size="small">
-                    +</StyledButton>
-            <StyledButton type="submit" variant="contained" color="primary" >
-                -</StyledButton>
+
 
         </form>
     );

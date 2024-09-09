@@ -1,15 +1,16 @@
 import { ReactNode } from 'react';
 import { styled } from '@mui/material/styles';
-import {Drawer, Typography} from "@mui/material";
+import {Box, Drawer, List, ListItem, ListItemText, Typography} from "@mui/material";
 
 interface LayoutProps {
     children: ReactNode;
 }
 
-const drawerWidth = 240
+const drawerWidth = 200
 const Page = styled('div')({
     backgroundColor: '#f9f9f9',
     width: '100%',
+    flexGrow: 1,
 });
 const NavDrawer = styled(Drawer)({
     width: drawerWidth,
@@ -18,31 +19,31 @@ const NavDrawer = styled(Drawer)({
 
 export default function Layout({ children }: Readonly<LayoutProps>): JSX.Element {
     return (
-        <div>
-            <NavDrawer variant="permanent" anchor="left"   sx={{ width: drawerWidth + 15 }}
+        <Box sx={{display:"flex"}}>
+            <NavDrawer variant="permanent" anchor="left"   sx={{ width: drawerWidth, flexShrink:0}}
                        PaperProps={{
-                           sx: { width: drawerWidth + 15 },
+                           sx: { width: drawerWidth},
                        }}>
-                <div>
-                    <Typography variant="h5">blood pressure</Typography>
-                </div>
+                <Box sx={{paddingTop: 20}}>
+                    <List>
+                        <ListItem>
+                            <ListItemText>
+                                <Typography variant="h5" color="primary">blood pressure</Typography>
+                            </ListItemText>
+                        </ListItem>
+                        <ListItem>
+                            <ListItemText>
+                                <Typography variant="h5" color="primary">other</Typography>
+                            </ListItemText>
+                        </ListItem>
+                    </List>
+                </Box>
             </NavDrawer>
             <Page>
                 {children}
             </Page>
-        </div>
+        </Box>
     );
 }
 
 
-/*
-const StyledContainer = styled(Container)({
-    backgroundColor: "blue",
-    minHeight:"100vh",
-    display:"flex",
-    justifyContent:"flex-end",
-    flexDirection:"column",
-    padding:"16px",
-    width: "85vw",
-    body:"100%",
-})*/

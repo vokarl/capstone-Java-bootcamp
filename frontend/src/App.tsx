@@ -1,19 +1,35 @@
 
 import './App.css'
-import PressureReadigsList from "./components/PressureReadingsList.tsx";
-import { styled, Typography} from "@mui/material";
-
+import PressureReadingsList from "./components/PressureReadingsList.tsx";
+import { styled, Typography, ThemeProvider, createTheme } from "@mui/material";
 import Layout from "./components/Layout.tsx";
+import {deepOrange} from "@mui/material/colors";
+
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#3f51b5',
+        },
+        secondary: deepOrange
+    },
+    typography: {
+        fontFamily: 'Roboto, Arial, sans-serif',
+    },
+
+});
 
 function App() {
 
 
     return (
-        <Layout>
+        <ThemeProvider theme={theme}>
+            <Layout>
+                <StyledTypography variant="h1" color="primary" align="center">track your health</StyledTypography>
+                <PressureReadingsList/>
+            </Layout>
+        </ThemeProvider>
 
-            <StyledTypography variant="h1" color="primary" align="center">track your health</StyledTypography>
-            <PressureReadigsList/>
-        </Layout>
     )
 }
 

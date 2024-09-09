@@ -4,7 +4,7 @@ import  axios from "axios";
 import PressureCard from "./PressureCard.tsx";
 import AddPressureForm from "./PressureForm.tsx";
 import GetPressureReadingById from "./GetPressureReadingById.tsx";
-import {Box, FormControl} from "@mui/material";
+import {Box, FormControl, List} from "@mui/material";
 
 
 
@@ -37,14 +37,17 @@ useEffect(()=>{
          <AddPressureForm onAddPressureForm={handlePressureReading}/>
      </FormControl>
             </Box>
+            <Box>
             <GetPressureReadingById readings={pressureReadings}/>
-            <div>
-                {pressureReadings.map(pressureReading=>(
-                    <li key={pressureReading.pressureId}>
+                    <Box>
+                {pressureReadings.slice().reverse().map(pressureReading=>(
+
+                    <List key={pressureReading.pressureId}>
                         <PressureCard pressureReading={pressureReading} fetchData={fetchData}/>
-                    </li>
+                    </List>
                 ))}
-            </div>
+                    </Box>
+            </Box>
         </>
     )
 
