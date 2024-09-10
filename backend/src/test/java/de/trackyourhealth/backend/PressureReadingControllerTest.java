@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -81,6 +82,26 @@ class PressureReadingControllerTest {
                          "bpm": 77
                          }
                    """));
+    }
+    @DirtiesContext
+    @Test
+    void deletePressureReading_shouldReturnHttpNoContent_whenDeleteExistingPressureReading() throws Exception {
+     //GIVEN WHEN
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/blood-pressure")
+                        .contentType("application/json")
+                        .content("""
+                        {
+                            "id": "2024-001",
+                            "systolic": 120,
+                            "diastolic": 80,
+                            "timestamp": "2024-09-09T12:00:00"
+                        }
+                        """))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        //THEN
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/blood-pressure/2024-001")
+                        .contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
 

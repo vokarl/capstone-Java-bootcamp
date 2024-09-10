@@ -27,5 +27,9 @@ public class PressureReadingController {
     public PressureReading addPressureReading(@RequestBody PressureReading pressureReading){
         return pressureReadingService.savePressureReading(pressureReading);
     }
+    @DeleteMapping("{id}")
+        void delete(@PathVariable String id){
+            pressureReadingService.deleteById(id);
+    }
 
 }

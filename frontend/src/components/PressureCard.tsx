@@ -1,24 +1,24 @@
 import {PressureReading} from "../models/PressureReading.ts";
-import {Card, CardContent, Typography} from "@mui/material";
+import {Button, Card, CardContent, Typography} from "@mui/material";
 import dayjs from 'dayjs';
 
 type PressureCardProps ={
     pressureReading: PressureReading;
     fetchData: () => void;
+    onDelete:(pressureId: string) => void;
 }
 
 const styles = {
     typography: {
-        fontSize: "18px",
+        fontSize: "14px",
         width: '150px',
         textAlign: 'center'
     }
 };
 
-
-export default function PressureCard({pressureReading}: Readonly<PressureCardProps>) {
+export default function PressureCard({pressureReading, onDelete}: Readonly<PressureCardProps>) {
     const formattedDate = dayjs(pressureReading.date).format("D.M.YYYY---HH:mm");
-
+ console.log(pressureReading)
     return (
         <Card sx={{ padding: 0,
             display: "flex",
@@ -34,11 +34,15 @@ export default function PressureCard({pressureReading}: Readonly<PressureCardPro
                 gap: 1}}>
 
                 <Typography sx={styles.typography}>
-                    ||||change
+                   change |||
                 </Typography>
-                <Typography sx={styles.typography}>
-                    delete
-                </Typography>
+                <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => onDelete(pressureReading.id)}
+                >
+                    del.
+                </Button>
                 <Typography sx={styles.typography}>
                     Date/Time: {formattedDate}
                 </Typography>

@@ -1,5 +1,5 @@
 export type PressureReading ={
-        pressureId: string;
+       id: string;
         date: string;
         time: string;
         systolic: number;

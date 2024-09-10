@@ -28,7 +28,15 @@ useEffect(()=>{
     const handlePressureReading = (newReading: PressureReading)=> {
         setPressureReadings(prevReadings=> [...prevReadings, newReading]);
     }
-
+    const handleDelete = (pressureId: string)=>{
+        axios.delete(`api/blood-pressure/${pressureId}`)
+            .then(()=>{
+                fetchData()
+            })
+            .catch(error => {
+                console.error("deletion not possible!", error)
+            })
+    }
     return(
         <>
         <h2>Blood Pressure Values</h2>
@@ -42,8 +50,11 @@ useEffect(()=>{
                     <Box>
                 {pressureReadings.slice().reverse().map(pressureReading=>(
 
-                    <List key={pressureReading.pressureId}>
-                        <PressureCard pressureReading={pressureReading} fetchData={fetchData}/>
+                    <List key={pressureReading.id}>
+                        <PressureCard pressureReading={pressureReading}
+                                      fetchData={fetchData}
+                                      onDelete={handleDelete}
+                        />
                     </List>
                 ))}
                     </Box>

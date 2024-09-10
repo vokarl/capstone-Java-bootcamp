@@ -22,4 +22,7 @@ public class PressureReadingService {
         return pressureReadingRepository.findById(id)
                 .orElseThrow(()-> new NoSuchElementException("Pressure reading with id " + id + " not found!"));
     }
+    public void deleteById(String id){
+        pressureReadingRepository.deleteById(id);
+    }
 }

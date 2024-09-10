@@ -54,4 +54,14 @@ class PressureReadingServiceTest {
         verify(pressureReadingRepository).findById(id);
         assertEquals(pressureReading, actual);
     }
+    @Test
+    void deleteById() {
+        // GIVEN
+        String idToDelete = "1";
+        // WHEN
+        pressureReadingService.deleteById(idToDelete);
+        // THEN
+        verify(pressureReadingRepository).deleteById(idToDelete);
+    }
+
 }
