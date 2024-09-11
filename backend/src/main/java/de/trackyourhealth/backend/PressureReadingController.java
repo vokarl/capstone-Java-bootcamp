@@ -31,5 +31,9 @@ public class PressureReadingController {
         void delete(@PathVariable String id){
             pressureReadingService.deleteById(id);
     }
+    @PutMapping("{id}")
+    public PressureReading updatePressureReading(@PathVariable String id, @RequestBody PressureDTO pressureDTO) {
+        return pressureReadingService.updateReading(pressureDTO, id);
+    }
 
 }

@@ -1,11 +1,24 @@
 import {PressureReading} from "../models/PressureReading.ts";
-import {Button, Card, CardContent, Typography} from "@mui/material";
-import dayjs from 'dayjs';
+import {Box, Button, Card, CardContent, styled, TextField, Typography} from "@mui/material";
+import dayjs, {Dayjs} from 'dayjs';
+import {useState} from "react";
+import {LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {DateTimePicker} from "@mui/x-date-pickers/DateTimePicker";
+
+
 
 type PressureCardProps ={
     pressureReading: PressureReading;
-    fetchData: () => void;
     onDelete:(pressureId: string) => void;
+    onUpdate:(pressureId: string, updatedReading: {
+        date:  string;
+        systolic: number;
+        diastolic: number;
+        id: string;
+        time: string;
+        bpm: number
+    }) => void;
 }
 
 const styles = {
@@ -16,9 +29,36 @@ const styles = {
     }
 };
 
-export default function PressureCard({pressureReading, onDelete}: Readonly<PressureCardProps>) {
-    const formattedDate = dayjs(pressureReading.date).format("D.M.YYYY---HH:mm");
- console.log(pressureReading)
+
+
+export default function PressureCard({pressureReading, onDelete, onUpdate}: Readonly<PressureCardProps>) {
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [updatedDate, setUpdatedDate] = useState<Dayjs | null>(null);
+    const [updatedSystolic, setUpdatedSystolic] = useState<number | undefined>(undefined);
+    const [updatedDiastolic, setUpdatedDiastolic] = useState<number | undefined>(undefined);
+    const [updatedBpm, setUpdatedBpm] = useState<number | undefined>(undefined);
+
+    const formattedDate = dayjs(pressureReading.date).isValid()
+        ? dayjs(pressureReading.date).format("D.M.YYYY---HH:mm")
+        : "Invalid Date";
+
+    function toggleEdit(){
+        setIsEditMode(!isEditMode);
+    }
+
+
+    const handleSave = () => {
+        const updatedReading = {
+            ...pressureReading,
+            date: updatedDate ? updatedDate.toISOString() : pressureReading.date,
+            systolic: updatedSystolic !== undefined ? updatedSystolic : pressureReading.systolic,
+            diastolic: updatedDiastolic !== undefined ? updatedDiastolic : pressureReading.diastolic,
+            bpm: updatedBpm !== undefined ? updatedBpm : pressureReading.bpm,
+        };
+        onUpdate(pressureReading.id, updatedReading);
+        setIsEditMode(false);
+    };
+
     return (
         <Card sx={{ padding: 0,
             display: "flex",
@@ -33,30 +73,86 @@ export default function PressureCard({pressureReading, onDelete}: Readonly<Press
                 alignItems:"center",
                 gap: 1}}>
 
-                <Typography sx={styles.typography}>
-                   change |||
-                </Typography>
                 <Button
                     variant="contained"
-                    color="error"
+                    color="primary"
+                    onClick={toggleEdit}>
+                    edit
+                </Button>
+                <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSave}>
+                  save
+                </Button>
+                <Button
+                    variant="contained"
+                    color="primary"
                     onClick={() => onDelete(pressureReading.id)}
                 >
                     del.
                 </Button>
-                <Typography sx={styles.typography}>
-                    Date/Time: {formattedDate}
-                </Typography>
 
-                <Typography sx={styles.typography}>
+                {isEditMode ?
+                    <StyledDateBox>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DateTimePicker
+                                label="Date"
+                                value={updatedDate}
+                                onChange={(newValue) => setUpdatedDate(newValue)}
+                                format="DD/MM/YYYY HH:mm"
+                                ampm={false}
+                            /></LocalizationProvider>
+                    </StyledDateBox>:
+                    <Typography sx={styles.typography}>
+                    Date/Time: {formattedDate}
+                </Typography>}
+
+
+                {isEditMode ?     <StyledBox>
+                        <TextField
+                            type="number"
+                            value={updatedSystolic !== undefined ? updatedSystolic : ''}
+                            onChange={(event) => setUpdatedSystolic(event.target.value !== '' ? Number(event.target.value) : undefined)}
+                            placeholder="Systolic"
+                            required
+
+                        />  </StyledBox>
+                    :<Typography sx={styles.typography}>
                     Systolic: {pressureReading.systolic}
-                </Typography>
-                <Typography sx={styles.typography}>
+                </Typography>}
+
+
+                {isEditMode?
+                    <StyledBox sx={{ display: "flex", gap: "16px" }}>
+
+                        <TextField
+                            type="number"
+                            value={updatedDiastolic !== undefined ? updatedDiastolic : ''}
+                            onChange={(event) => setUpdatedDiastolic(event.target.value !== '' ? Number(event.target.value) : undefined)}
+                            placeholder="Diastolic"
+                            required
+                        />
+                    </StyledBox>
+                    :<Typography sx={styles.typography}>
                     Diastolic: {pressureReading.diastolic}
                 </Typography>
+                }
+                {isEditMode?
+                    <StyledBox>
+
+                        <TextField
+                            type="number"
+                            value={updatedBpm !== undefined ? updatedBpm : ''}
+                            onChange={(event) => setUpdatedBpm(event.target.value !== '' ? Number(event.target.value) : undefined)}
+                            placeholder="Bpm"
+                            required
+                        />  </StyledBox>:
+
                 <Typography sx={styles.typography}>
                     BPM: {pressureReading.bpm}
                 </Typography>
-
+                }
 
             </CardContent>
         </Card>
@@ -66,6 +162,25 @@ export default function PressureCard({pressureReading, onDelete}: Readonly<Press
 
 
 
+
+const StyledDateBox = styled(Box)(({ theme }) => ({
+    display: "flex",
+    gap: "16px",
+    backgroundColor: theme.palette.background.paper,
+    padding: "4px",
+    marginBottom: "20px",
+    borderRadius: "8px",
+
+}));
+const StyledBox = styled(Box)(({ theme }) => ({
+    display: "flex",
+    gap: "16px",
+    backgroundColor: theme.palette.background.paper,
+    padding: "4px",
+    marginBottom: "20px",
+    borderRadius: "8px",
+
+}));
 
 
 

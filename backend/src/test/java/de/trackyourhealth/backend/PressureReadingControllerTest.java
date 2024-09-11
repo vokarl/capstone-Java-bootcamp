@@ -104,5 +104,34 @@ class PressureReadingControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @DirtiesContext
+    @Test
+    void updatePressureReading_shouldUpdateReading_whenOldReadingIsUpdated() throws Exception {
+        //GIVEN
+        PressureReading existingPressureReading = new PressureReading("1", "22.1.12", "12:30", 120, 80, 77);
+        pressureReadingRepository.save(existingPressureReading);
+
+        //WHEN
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/blood-pressure/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                {
+                    "date": "23.1.12",
+                    "time": "14:00",
+                    "systolic": 125,
+                    "diastolic": 85,
+                    "bpm": 75
+                }
+                """))
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("1"))
+                .andExpect(jsonPath("$.date").value("23.1.12"))
+                .andExpect(jsonPath("$.time").value("14:00"))
+                .andExpect(jsonPath("$.systolic").value(125))
+                .andExpect(jsonPath("$.diastolic").value(85))
+                .andExpect(jsonPath("$.bpm").value(75));
+    }
+
 
 }

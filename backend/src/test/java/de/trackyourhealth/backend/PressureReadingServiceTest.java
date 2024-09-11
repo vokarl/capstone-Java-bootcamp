@@ -2,6 +2,7 @@ package de.trackyourhealth.backend;
 
 import org.junit.jupiter.api.Test;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 
@@ -62,6 +63,50 @@ class PressureReadingServiceTest {
         pressureReadingService.deleteById(idToDelete);
         // THEN
         verify(pressureReadingRepository).deleteById(idToDelete);
+    }
+
+
+
+    @Test
+    void updateReading_ShouldUpdateExistingReading() {
+        //GIVEN
+        String id = "1";
+        PressureReading existingReading = new PressureReading(id, "21.12.2023", "12:30", 130, 80, 70);
+        PressureDTO updatedDTO = new PressureDTO("22.12.2023", "14:00", 135, 85, 72);
+
+        when(pressureReadingRepository.findById(id)).thenReturn(Optional.of(existingReading));
+        when(pressureReadingRepository.save(any(PressureReading.class))).thenReturn(
+                new PressureReading(id, "22.12.2023", "14:00", 135, 85, 72)
+        );
+
+        //WHEN
+        PressureReading updatedReading = pressureReadingService.updateReading(updatedDTO, id);
+
+        //THEN
+        verify(pressureReadingRepository).findById(id);
+        verify(pressureReadingRepository).save(any(PressureReading.class));
+
+        assertNotNull(updatedReading);
+        assertEquals("22.12.2023", updatedReading.date());
+        assertEquals("14:00", updatedReading.time());
+        assertEquals(135, updatedReading.systolic());
+        assertEquals(85, updatedReading.diastolic());
+        assertEquals(72, updatedReading.bpm());
+    }
+    @Test
+    void updateReading_ShouldThrowException_WhenReadingNotFound() {
+        //GIVEN
+        String id = "999";
+        PressureDTO updatedDTO = new PressureDTO("22.12.2023", "14:00", 135, 85, 72);
+
+        when(pressureReadingRepository.findById(id)).thenReturn(Optional.empty());
+
+        //WHEN + THEN
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> pressureReadingService.updateReading(updatedDTO, id));
+
+        assertEquals("No reading with id: 999", exception.getMessage());
+        verify(pressureReadingRepository).findById(id);
+        verify(pressureReadingRepository, never()).save(any(PressureReading.class));
     }
 
 }

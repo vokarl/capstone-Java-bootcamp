@@ -25,4 +25,17 @@ public class PressureReadingService {
     public void deleteById(String id){
         pressureReadingRepository.deleteById(id);
     }
+
+
+    public PressureReading updateReading(PressureDTO pressureDTO, String id) {
+        PressureReading pressureReading = pressureReadingRepository.findById(id).orElseThrow(()
+                    -> new NoSuchElementException(("No reading with id: " + id)))
+                .withDate(pressureDTO.date())
+                .withTime(pressureDTO.time())
+                .withSystolic(pressureDTO.systolic())
+                .withDiastolic(pressureDTO.diastolic())
+                .withBpm(pressureDTO.bpm());
+            return pressureReadingRepository.save(pressureReading);
+    }
+
 }

@@ -1,10 +1,6 @@
 package de.trackyourhealth.backend;
 
-import lombok.With;
-
-@With
-public record PressureReading(
-        String id,
+public record PressureDTO(
         String date,
         String time,
         int systolic,
