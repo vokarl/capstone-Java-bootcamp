@@ -11,7 +11,14 @@ import {DateTimePicker} from "@mui/x-date-pickers/DateTimePicker";
 type PressureCardProps ={
     pressureReading: PressureReading;
     onDelete:(pressureId: string) => void;
-    onUpdate:(pressureId: string, updatedReading: { date: any; systolic: number; diastolic: number; bpm: number }) => void;
+    onUpdate:(pressureId: string, updatedReading: {
+        date:  string;
+        systolic: number;
+        diastolic: number;
+        id: string;
+        time: string;
+        bpm: number
+    }) => void;
 }
 
 const styles = {
@@ -42,7 +49,8 @@ export default function PressureCard({pressureReading, onDelete, onUpdate}: Read
 
     const handleSave = () => {
         const updatedReading = {
-            date: updatedDate ? updatedDate.toISOString() : (typeof pressureReading.date === 'string' ? pressureReading.date : pressureReading.date.toISOString()),
+            ...pressureReading,
+            date: updatedDate ? updatedDate.toISOString() : pressureReading.date,
             systolic: updatedSystolic !== undefined ? updatedSystolic : pressureReading.systolic,
             diastolic: updatedDiastolic !== undefined ? updatedDiastolic : pressureReading.diastolic,
             bpm: updatedBpm !== undefined ? updatedBpm : pressureReading.bpm,
