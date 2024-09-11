@@ -28,6 +28,8 @@ useEffect(()=>{
     const handlePressureReading = (newReading: PressureReading)=> {
         setPressureReadings(prevReadings=> [...prevReadings, newReading]);
     }
+
+
     const handleDelete = (pressureId: string)=>{
         axios.delete(`api/blood-pressure/${pressureId}`)
             .then(()=>{
@@ -36,6 +38,20 @@ useEffect(()=>{
             .catch(error => {
                 console.error("deletion not possible!", error)
             })
+    }
+    const handleUpdate = (id: string, updatedReading: PressureReading)=>{
+        axios.put(`/api/blood-pressure/${id}`, updatedReading, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(() => {
+                fetchData();
+            })
+            .catch(error => {
+                console.error("updating was not possible!", error);
+                alert("not able to update changes");
+            });
     }
     return(
         <>
@@ -52,8 +68,9 @@ useEffect(()=>{
 
                     <List key={pressureReading.id}>
                         <PressureCard pressureReading={pressureReading}
-                                      fetchData={fetchData}
+
                                       onDelete={handleDelete}
+                                      onUpdate={handleUpdate}
                         />
                     </List>
                 ))}
