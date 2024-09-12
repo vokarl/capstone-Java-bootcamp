@@ -21,13 +21,7 @@ type PressureCardProps ={
     }) => void;
 }
 
-const styles = {
-    typography: {
-        fontSize: "14px",
-        width: '150px',
-        textAlign: 'center'
-    }
-};
+
 
 
 
@@ -162,7 +156,13 @@ export default function PressureCard({pressureReading, onDelete, onUpdate}: Read
 
 
 
-
+const styles = {
+    typography: {
+        fontSize: "14px",
+        width: '150px',
+        textAlign: 'center'
+    }
+};
 const StyledDateBox = styled(Box)(({ theme }) => ({
     display: "flex",
     gap: "16px",
