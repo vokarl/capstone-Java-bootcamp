@@ -6,8 +6,6 @@ import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DateTimePicker} from "@mui/x-date-pickers/DateTimePicker";
 
-
-
 type PressureCardProps ={
     pressureReading: PressureReading;
     onDelete:(pressureId: string) => void;
@@ -20,10 +18,6 @@ type PressureCardProps ={
         bpm: number
     }) => void;
 }
-
-
-
-
 
 export default function PressureCard({pressureReading, onDelete, onUpdate}: Readonly<PressureCardProps>) {
     const [isEditMode, setIsEditMode] = useState(false);
@@ -39,8 +33,6 @@ export default function PressureCard({pressureReading, onDelete, onUpdate}: Read
     function toggleEdit(){
         setIsEditMode(!isEditMode);
     }
-
-
     const handleSave = () => {
         const updatedReading = {
             ...pressureReading,
@@ -86,7 +78,6 @@ export default function PressureCard({pressureReading, onDelete, onUpdate}: Read
                 >
                     del.
                 </Button>
-
                 {isEditMode ?
                     <StyledDateBox>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -101,8 +92,6 @@ export default function PressureCard({pressureReading, onDelete, onUpdate}: Read
                     <Typography sx={styles.typography}>
                     Date/Time: {formattedDate}
                 </Typography>}
-
-
                 {isEditMode ?     <StyledBox>
                         <TextField
                             type="number"
@@ -115,11 +104,8 @@ export default function PressureCard({pressureReading, onDelete, onUpdate}: Read
                     :<Typography sx={styles.typography}>
                     Systolic: {pressureReading.systolic}
                 </Typography>}
-
-
                 {isEditMode?
                     <StyledBox sx={{ display: "flex", gap: "16px" }}>
-
                         <TextField
                             type="number"
                             value={updatedDiastolic !== undefined ? updatedDiastolic : ''}

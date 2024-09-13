@@ -1,21 +1,20 @@
 import {useEffect, useState} from "react";
 import {PressureReading} from "../models/PressureReading.ts";
 import  axios from "axios";
-import PressureCard from "./PressureCard.tsx";
 import AddPressureForm from "./PressureForm.tsx";
 import GetPressureReadingById from "./GetPressureReadingById.tsx";
-import {Box, FormControl, List} from "@mui/material";
+import {Box, FormControl} from "@mui/material";
 
 
 
 
 export default function PressureReadigsList(){
-    const [pressureReadings, setPressureReadings]= useState<PressureReading[]>([]);
+    const [readings, setReadings]= useState<PressureReading[]>([]);
 
     function fetchData(){
         axios.get<PressureReading[]>("api/blood-pressure")
             .then(response=>{
-                setPressureReadings(response.data);
+                setReadings(response.data);
             })
             .catch(error =>{
                 console.error("No data found!", error);
@@ -25,8 +24,8 @@ useEffect(()=>{
     fetchData()
 },[]);
 
-    const handlePressureReading = (newReading: PressureReading)=> {
-        setPressureReadings(prevReadings=> [...prevReadings, newReading]);
+    const handleReading = (newReading: PressureReading)=> {
+        setReadings(prevReadings=> [...prevReadings, newReading]);
     }
 
 
@@ -58,23 +57,13 @@ useEffect(()=>{
         <h2>Blood Pressure Values</h2>
             <Box sx={{ mb: 6 }}>
      <FormControl fullWidth >
-         <AddPressureForm onAddPressureForm={handlePressureReading}/>
+         <AddPressureForm onAddPressureForm={handleReading}/>
      </FormControl>
             </Box>
             <Box>
-            <GetPressureReadingById readings={pressureReadings}/>
-                    <Box>
-                {pressureReadings.slice().reverse().map(pressureReading=>(
-
-                    <List key={pressureReading.id}>
-                        <PressureCard pressureReading={pressureReading}
-
-                                      onDelete={handleDelete}
-                                      onUpdate={handleUpdate}
-                        />
-                    </List>
-                ))}
-                    </Box>
+            <GetPressureReadingById readings={readings}
+                                    onUpdate={handleUpdate}
+                                    onDelete={handleDelete}/>
             </Box>
         </>
     )
