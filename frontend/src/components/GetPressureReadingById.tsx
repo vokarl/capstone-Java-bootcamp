@@ -62,13 +62,13 @@ export default function GetPressureReadingById({readings, onUpdate, onDelete}: R
     return(
         <div className="search-field">
             <form onSubmit={handleSubmit}>
+                <p>search:</p>
                 <input
                     type="date"
                     value={searchText}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchText(e.target.value)}
                     placeholder="search"
                 />
-                <button type="submit">submit</button>
             </form>
             <div className="reading-by-id">
                 <div>Sort:</div>
