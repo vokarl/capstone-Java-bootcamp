@@ -11,10 +11,20 @@ public class PressureReadingService {
 
     private final PressureReadingRepository pressureReadingRepository;
 
+
     public List<PressureReading> findAllReadings() {
         return pressureReadingRepository.findAll();
     }
-    public PressureReading savePressureReading(PressureReading pressureReading) {
+
+    public PressureReading savePressureReading(PressureDTO pressureDTO) {
+
+        PressureReading pressureReading = new PressureReading(
+               null,
+                pressureDTO.dateTime(),
+                pressureDTO.systolic(),
+                pressureDTO.diastolic(),
+                pressureDTO.bpm()
+        );
         return pressureReadingRepository.save(pressureReading);
     }
 
@@ -28,14 +38,13 @@ public class PressureReadingService {
 
 
     public PressureReading updateReading(PressureDTO pressureDTO, String id) {
-        PressureReading pressureReading = pressureReadingRepository.findById(id).orElseThrow(()
-                    -> new NoSuchElementException(("No reading with id: " + id)))
-                .withDate(pressureDTO.date())
-                .withTime(pressureDTO.time())
+        PressureReading pressureReading = pressureReadingRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("No reading with id: " + id))
+                .withDateTime(pressureDTO.dateTime())
                 .withSystolic(pressureDTO.systolic())
                 .withDiastolic(pressureDTO.diastolic())
                 .withBpm(pressureDTO.bpm());
-            return pressureReadingRepository.save(pressureReading);
+        return pressureReadingRepository.save(pressureReading);
     }
 
 }

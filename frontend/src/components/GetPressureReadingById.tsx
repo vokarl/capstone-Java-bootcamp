@@ -1,48 +1,66 @@
 import {PressureReading} from "../models/PressureReading.ts";
 import {ChangeEvent, FormEvent, useState} from "react";
 import PressureCard from "./PressureCard.tsx";
+import dayjs from "dayjs";
 
 type PressureByIdProps ={
 readings: PressureReading[];
+    onDelete:(pressureId: string) => void;
+    onUpdate: (pressureId: string, updatedReading: PressureReading) => void;
 }
-
-export default function GetPressureReadingById(props: Readonly<PressureByIdProps>){
+export default function GetPressureReadingById({readings, onUpdate, onDelete}: Readonly<PressureByIdProps>){
     const [searchText, setSearchText] = useState("");
-    const [submittedText, setSubmittedText] = useState("");
 
     const handleSubmit =(event: FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
-        setSubmittedText(searchText);
+        filteredReadings()
     }
-    const filteredReadings : PressureReading[] = submittedText ?
-        props.readings.filter((reading:PressureReading)=>
-            reading.date.includes(submittedText)): [];
 
-    const noReadingsMessage = submittedText && filteredReadings.length === 0 ? (
-        <p className="no-pressures-found">No pressures found </p>
-    ): null;
+ function filteredReadings(): PressureReading[] {
+        return readings.filter((reading: PressureReading) => {
+            const readingDate = dayjs(reading.dateTime).format("DD.MM.YYYY");
+            const searchDate = dayjs(searchText).format("DD.MM.YYYY");
+           return readingDate === searchDate;
+        });
+    }
+        const renderReading = ()=>{
+            if (filteredReadings().length > 0){
+                return filteredReadings().map((reading) =>(
+                    <PressureCard key={reading.id}
+                                  pressureReading={reading}
+                                  onDelete={onDelete}
+                                  onUpdate={onUpdate}
+                    />
+                ));
+            }else if(searchText && filteredReadings().length === 0){
+                return <p>reading with date not found</p>
+            } else{
+                const sortedReadings = readings.slice().sort((a,b)=> new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime())
+                return sortedReadings.map(reading =>(
+                    <PressureCard key={reading.id}
+                                  pressureReading={reading}
+                                  onDelete={onDelete}
+                                  onUpdate={onUpdate}
+                    />
+                ))
+            }
 
-
+    }
     return(
         <div className="search-field">
             <form onSubmit={handleSubmit}>
                 <input
-                    type="text"
+                    type="date"
                     value={searchText}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchText(e.target.value)}
                     placeholder="search"
                 />
                 <button type="submit">submit</button>
             </form>
-            {submittedText  && filteredReadings.length > 0 ? (
-                <div className="reading-by-id">
-                    <div>reading: </div>
-                    {filteredReadings.map(reading =>(
-                        <PressureCard key={reading.pressureId} pressureReading={reading} fetchData={()=>{}}/>
-                    ))}
-                </div>
-            ) : noReadingsMessage}
-
+            <div className="reading-by-id">
+                <div>readings: </div>
+                {renderReading()}
         </div>
-    );
+        </div>
+    )
 }

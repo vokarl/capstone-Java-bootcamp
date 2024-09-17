@@ -6,51 +6,36 @@ import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DateTimePicker} from "@mui/x-date-pickers/DateTimePicker";
 
-
-
 type PressureCardProps ={
     pressureReading: PressureReading;
     onDelete:(pressureId: string) => void;
     onUpdate:(pressureId: string, updatedReading: {
-        date:  string;
+        dateTime:  string;
         systolic: number;
         diastolic: number;
         id: string;
-        time: string;
         bpm: number
     }) => void;
 }
 
-const styles = {
-    typography: {
-        fontSize: "14px",
-        width: '150px',
-        textAlign: 'center'
-    }
-};
-
-
-
 export default function PressureCard({pressureReading, onDelete, onUpdate}: Readonly<PressureCardProps>) {
     const [isEditMode, setIsEditMode] = useState(false);
-    const [updatedDate, setUpdatedDate] = useState<Dayjs | null>(null);
+    const [updatedDateTime, setUpdatedDateTime] = useState<Dayjs | null>(null);
     const [updatedSystolic, setUpdatedSystolic] = useState<number | undefined>(undefined);
     const [updatedDiastolic, setUpdatedDiastolic] = useState<number | undefined>(undefined);
     const [updatedBpm, setUpdatedBpm] = useState<number | undefined>(undefined);
 
-    const formattedDate = dayjs(pressureReading.date).isValid()
-        ? dayjs(pressureReading.date).format("D.M.YYYY---HH:mm")
+    const formattedDate = dayjs(pressureReading.dateTime).isValid()
+        ? dayjs(pressureReading.dateTime).format("D.M.YYYY---HH:mm")
         : "Invalid Date";
 
     function toggleEdit(){
         setIsEditMode(!isEditMode);
     }
-
-
     const handleSave = () => {
         const updatedReading = {
             ...pressureReading,
-            date: updatedDate ? updatedDate.toISOString() : pressureReading.date,
+            dateTime: updatedDateTime ? updatedDateTime.toISOString() : pressureReading.dateTime,
             systolic: updatedSystolic !== undefined ? updatedSystolic : pressureReading.systolic,
             diastolic: updatedDiastolic !== undefined ? updatedDiastolic : pressureReading.diastolic,
             bpm: updatedBpm !== undefined ? updatedBpm : pressureReading.bpm,
@@ -92,23 +77,20 @@ export default function PressureCard({pressureReading, onDelete, onUpdate}: Read
                 >
                     del.
                 </Button>
-
                 {isEditMode ?
                     <StyledDateBox>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DateTimePicker
                                 label="Date"
-                                value={updatedDate}
-                                onChange={(newValue) => setUpdatedDate(newValue)}
+                                value={updatedDateTime}
+                                onChange={(newValue) => setUpdatedDateTime(newValue)}
                                 format="DD/MM/YYYY HH:mm"
                                 ampm={false}
                             /></LocalizationProvider>
                     </StyledDateBox>:
                     <Typography sx={styles.typography}>
-                    Date/Time: {formattedDate}
+                    Date/Time: {formattedDate.toString()}
                 </Typography>}
-
-
                 {isEditMode ?     <StyledBox>
                         <TextField
                             type="number"
@@ -121,11 +103,8 @@ export default function PressureCard({pressureReading, onDelete, onUpdate}: Read
                     :<Typography sx={styles.typography}>
                     Systolic: {pressureReading.systolic}
                 </Typography>}
-
-
                 {isEditMode?
                     <StyledBox sx={{ display: "flex", gap: "16px" }}>
-
                         <TextField
                             type="number"
                             value={updatedDiastolic !== undefined ? updatedDiastolic : ''}
@@ -162,7 +141,13 @@ export default function PressureCard({pressureReading, onDelete, onUpdate}: Read
 
 
 
-
+const styles = {
+    typography: {
+        fontSize: "14px",
+        width: '150px',
+        textAlign: 'center'
+    }
+};
 const StyledDateBox = styled(Box)(({ theme }) => ({
     display: "flex",
     gap: "16px",

@@ -10,6 +10,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoUnit;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -25,7 +32,7 @@ class PressureReadingControllerTest {
     PressureReadingRepository pressureReadingRepository;
     @DirtiesContext
     @Test
-    void getAllReadings() throws Exception {
+    void getAllReadings_ShouldReturnAllAvailableReadings() throws Exception {
         //GIVEN
         //WHEN
         mockMvc.perform(MockMvcRequestBuilders.get("/api/blood-pressure"))
@@ -38,51 +45,57 @@ class PressureReadingControllerTest {
     }
     @Test
     @DirtiesContext
-    void addNewPressureReading() throws Exception {
-        //GIVEN
+    void addNewPressureReading_ShouldReturnCreatedReading() throws Exception {
+        // GIVEN
+        Instant now = Instant.now();
+        String dateTimeString = DateTimeFormatter.ISO_INSTANT.format(now);
 
-        //WHEN
+        // WHEN
         mockMvc.perform(post("/api/blood-pressure")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
+                        .content(String.format("""
        {
-            "date": "21.12.2023",
-            "time": "12:30",
+            "dateTime": "%s",
             "systolic": 130,
             "diastolic": 80,
             "bpm": 70
        }
-       """))
-                //THEN
+       """, dateTimeString)))
+                // THEN
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.date").value("21.12.2023"))
-                .andExpect(jsonPath("$.time").value("12:30"))
+                .andExpect(jsonPath("$.dateTime").value(dateTimeString))
                 .andExpect(jsonPath("$.systolic").value(130))
-                .andExpect(jsonPath("$.diastolic").value("80"))
-                .andExpect(jsonPath("$.bpm").value("70"));
+                .andExpect(jsonPath("$.diastolic").value(80))
+                .andExpect(jsonPath("$.bpm").value(70));
     }
     @Test
     @DirtiesContext
-    void getPressureReadingById() throws Exception {
-        //GIVEN
-        PressureReading newPressureReading = new PressureReading("1","22.1.12","12:30",120,80,77);
+    void getPressureReadingById_ShouldReturnReadingWithId() throws Exception {
+        // GIVEN
+        Instant now = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+        PressureReading newPressureReading = new PressureReading("1", now, 120, 80, 77);
         pressureReadingRepository.save(newPressureReading);
-        //WHEN
+
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                .append(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                .appendLiteral("Z")
+                .toFormatter()
+                .withZone(ZoneOffset.UTC);
+
+        String formattedDateTime = formatter.format(now);
+
+        // WHEN
         mockMvc.perform(MockMvcRequestBuilders.get("/api/blood-pressure/1"))
-                //THEN
+                // THEN
                 .andExpect(status().isOk())
-                .andExpect(content().json("""
-                    {
-                         "id": "1",
-                         "date": "22.1.12",
-                         "time": "12:30",
-                         "systolic": 120,
-                         "diastolic": 80,
-                         "bpm": 77
-                         }
-                   """));
+                .andExpect(jsonPath("$.id").value("1"))
+                .andExpect(jsonPath("$.dateTime").value(formattedDateTime))
+                .andExpect(jsonPath("$.systolic").value(120))
+                .andExpect(jsonPath("$.diastolic").value(80))
+                .andExpect(jsonPath("$.bpm").value(77));
     }
+
     @DirtiesContext
     @Test
     void deletePressureReading_shouldReturnHttpNoContent_whenDeleteExistingPressureReading() throws Exception {
@@ -108,26 +121,28 @@ class PressureReadingControllerTest {
     @Test
     void updatePressureReading_shouldUpdateReading_whenOldReadingIsUpdated() throws Exception {
         //GIVEN
-        PressureReading existingPressureReading = new PressureReading("1", "22.1.12", "12:30", 120, 80, 77);
+        Instant now = Instant.now();
+        PressureReading existingPressureReading = new PressureReading("1", now, 120, 80, 77);
         pressureReadingRepository.save(existingPressureReading);
 
+        String nowToString = now.toString();
+        String updatedPressureReadingJson = """
+            {
+             
+                "dateTime": "%s",
+                "systolic": 125,
+                "diastolic": 85,
+                "bpm": 75
+            }
+            """.formatted(nowToString);
         //WHEN
         mockMvc.perform(MockMvcRequestBuilders.put("/api/blood-pressure/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                {
-                    "date": "23.1.12",
-                    "time": "14:00",
-                    "systolic": 125,
-                    "diastolic": 85,
-                    "bpm": 75
-                }
-                """))
+                        .content(updatedPressureReadingJson))
                 //THEN
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("1"))
-                .andExpect(jsonPath("$.date").value("23.1.12"))
-                .andExpect(jsonPath("$.time").value("14:00"))
+                .andExpect(jsonPath("$.dateTime").value(nowToString))
                 .andExpect(jsonPath("$.systolic").value(125))
                 .andExpect(jsonPath("$.diastolic").value(85))
                 .andExpect(jsonPath("$.bpm").value(75));
