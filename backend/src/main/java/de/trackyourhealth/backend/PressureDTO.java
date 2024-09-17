@@ -1,8 +1,11 @@
 package de.trackyourhealth.backend;
 
+import java.time.Instant;
+
+
+
 public record PressureDTO(
-        String date,
-        String time,
+        Instant dateTime,
         int systolic,
         int diastolic,
         int bpm

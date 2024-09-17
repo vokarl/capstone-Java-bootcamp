@@ -12,7 +12,7 @@ interface PressureFormProps {
 }
 
 export default function PressureForm({ onAddPressureForm  }: Readonly<PressureFormProps>) {
-    const [date, setDate] = useState<Dayjs | null>(null);
+    const [dateTime, setDateTime] = useState<Dayjs | null>(null);
     const [systolic, setSystolic] = useState<number | undefined>(undefined);
     const [diastolic, setDiastolic] = useState<number | undefined>(undefined);
     const [bpm, setBpm] = useState<number | undefined>(undefined);
@@ -20,13 +20,13 @@ export default function PressureForm({ onAddPressureForm  }: Readonly<PressureFo
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
 
-        if (!date || systolic === undefined || diastolic === undefined || bpm === undefined) {
+        if (!dateTime || systolic === undefined || diastolic === undefined || bpm === undefined) {
             return; 
         }
-        const dateTimeString = date.format("YYYY-MM-DDTHH:mm:ss");
+        const dateTimeString = dateTime.toISOString();
         const newReading = {
             pressureId: '',
-            date: dateTimeString,
+            dateTime: dateTimeString,
             systolic,
             diastolic,
             bpm,
@@ -35,7 +35,8 @@ export default function PressureForm({ onAddPressureForm  }: Readonly<PressureFo
         axios.post<PressureReading>("api/blood-pressure", newReading)
             .then(response => {
                 onAddPressureForm(response.data);
-                setDate(null);
+                setDateTime(null);
+
                 setSystolic(undefined);
                 setDiastolic(undefined);
                 setBpm(undefined);
@@ -53,8 +54,8 @@ export default function PressureForm({ onAddPressureForm  }: Readonly<PressureFo
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                <DateTimePicker
                     label="Date"
-                    value={date}
-                    onChange={(newValue) => setDate(newValue)}
+                    value={dateTime}
+                    onChange={(newValue) => setDateTime(newValue)}
                         format="DD/MM/YYYY HH:mm"
                     ampm={false}
                /></LocalizationProvider>

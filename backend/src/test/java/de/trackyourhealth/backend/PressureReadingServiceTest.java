@@ -1,6 +1,8 @@
 package de.trackyourhealth.backend;
 
 import org.junit.jupiter.api.Test;
+
+import java.time.Instant;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -18,10 +20,10 @@ class PressureReadingServiceTest {
     @Test
     void findAllReadings() {
         // GIVEN
-
-        PressureReading r1 = new PressureReading( "1","8-6-23","12:30", 70, 80, 60);
-        PressureReading r2 = new PressureReading( "2","5-3-24" , "11:34", 80, 85, 67);
-        PressureReading r3 = new PressureReading( "3","15-3-24" , "10:34", 80, 85, 67);
+        Instant now = Instant.now();
+        PressureReading r1 = new PressureReading( "1", now,70, 80, 60);
+        PressureReading r2 = new PressureReading( "2",now, 80, 85, 67);
+        PressureReading r3 = new PressureReading( "3",now, 80, 85, 67);
         List<PressureReading> pressureReadings = List.of(r1, r2, r3);
 
         when(pressureReadingRepository.findAll()).thenReturn(pressureReadings);
@@ -29,16 +31,27 @@ class PressureReadingServiceTest {
         List<PressureReading> actual = pressureReadingService.findAllReadings();
         //THEN
         verify(pressureReadingRepository).findAll();
-        List<PressureReading> expected = List.of(new PressureReading( "1","8-6-23","12:30", 70, 80, 60), new PressureReading( "2","5-3-24" , "11:34", 80, 85, 67), new PressureReading( "3","15-3-24" , "10:34", 80, 85, 67));
+        List<PressureReading> expected = List.of(new PressureReading( "1",now, 70, 80, 60),
+                new PressureReading( "2",now, 80, 85, 67),
+                new PressureReading( "3", now, 80, 85, 67));
         assertEquals(expected, actual);
     }
     @Test
-    void addPressureReading(){
+    void addPressureReading_shouldAddAnotherReading(){
         // GIVEN
-        PressureReading newPressureReading = new PressureReading("1435", "22.1.23","11:10",  130,70,56);
+        Instant now = Instant.now();
+        PressureDTO newPressureReadingDTO = new PressureDTO( now, 130,70,56);
+
+        PressureReading newPressureReading = new PressureReading(
+                null,
+                now,
+                130,
+                70,
+                56
+        );
         when(pressureReadingRepository.save(newPressureReading)).thenReturn(newPressureReading);
         //WHEN
-        PressureReading actual = pressureReadingService.savePressureReading(newPressureReading);
+        PressureReading actual = pressureReadingService.savePressureReading(newPressureReadingDTO);
         //THEN
         verify(pressureReadingRepository).save(newPressureReading);
         assertEquals(newPressureReading, actual);
@@ -46,8 +59,9 @@ class PressureReadingServiceTest {
     @Test
     void findPressureReadingById(){
         //GIVEN
+        Instant now = Instant.now();
         String id = "1";
-        PressureReading pressureReading = new PressureReading("1","22.1.12", "12:20", 120,70,77);
+        PressureReading pressureReading = new PressureReading("1",now,120,70,77);
         //WHEN
         when(pressureReadingRepository.findById(id)).thenReturn(Optional.of(pressureReading));
         PressureReading actual = pressureReadingService.findPressureReadingById(id);
@@ -70,13 +84,14 @@ class PressureReadingServiceTest {
     @Test
     void updateReading_ShouldUpdateExistingReading() {
         //GIVEN
+        Instant now = Instant.now();
         String id = "1";
-        PressureReading existingReading = new PressureReading(id, "21.12.2023", "12:30", 130, 80, 70);
-        PressureDTO updatedDTO = new PressureDTO("22.12.2023", "14:00", 135, 85, 72);
+        PressureReading existingReading = new PressureReading(id, now, 130, 80, 70);
+        PressureDTO updatedDTO = new PressureDTO(now, 135, 85, 72);
 
         when(pressureReadingRepository.findById(id)).thenReturn(Optional.of(existingReading));
         when(pressureReadingRepository.save(any(PressureReading.class))).thenReturn(
-                new PressureReading(id, "22.12.2023", "14:00", 135, 85, 72)
+                new PressureReading(id, now, 135, 85, 72)
         );
 
         //WHEN
@@ -87,8 +102,8 @@ class PressureReadingServiceTest {
         verify(pressureReadingRepository).save(any(PressureReading.class));
 
         assertNotNull(updatedReading);
-        assertEquals("22.12.2023", updatedReading.date());
-        assertEquals("14:00", updatedReading.time());
+
+        assertEquals(now, updatedReading.dateTime());
         assertEquals(135, updatedReading.systolic());
         assertEquals(85, updatedReading.diastolic());
         assertEquals(72, updatedReading.bpm());
@@ -96,8 +111,9 @@ class PressureReadingServiceTest {
     @Test
     void updateReading_ShouldThrowException_WhenReadingNotFound() {
         //GIVEN
+        Instant now = Instant.now();
         String id = "999";
-        PressureDTO updatedDTO = new PressureDTO("22.12.2023", "14:00", 135, 85, 72);
+        PressureDTO updatedDTO = new PressureDTO(now, 135, 85, 72);
 
         when(pressureReadingRepository.findById(id)).thenReturn(Optional.empty());
 

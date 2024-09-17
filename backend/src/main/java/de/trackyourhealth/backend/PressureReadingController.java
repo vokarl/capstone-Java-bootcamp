@@ -2,7 +2,6 @@ package de.trackyourhealth.backend;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 
@@ -24,8 +23,8 @@ public class PressureReadingController {
     }
 
     @PostMapping
-    public PressureReading addPressureReading(@RequestBody PressureReading pressureReading){
-        return pressureReadingService.savePressureReading(pressureReading);
+    public PressureReading addPressureReading(@RequestBody PressureDTO pressureDTO){
+        return pressureReadingService.savePressureReading(pressureDTO);
     }
     @DeleteMapping("{id}")
         void delete(@PathVariable String id){

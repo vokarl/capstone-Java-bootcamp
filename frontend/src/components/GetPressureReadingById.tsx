@@ -8,10 +8,6 @@ readings: PressureReading[];
     onDelete:(pressureId: string) => void;
     onUpdate: (pressureId: string, updatedReading: PressureReading) => void;
 }
-
-
-
-
 export default function GetPressureReadingById({readings, onUpdate, onDelete}: Readonly<PressureByIdProps>){
     const [searchText, setSearchText] = useState("");
 
@@ -22,7 +18,7 @@ export default function GetPressureReadingById({readings, onUpdate, onDelete}: R
 
  function filteredReadings(): PressureReading[] {
         return readings.filter((reading: PressureReading) => {
-            const readingDate = dayjs(reading.date).format("DD.MM.YYYY");
+            const readingDate = dayjs(reading.dateTime).format("DD.MM.YYYY");
             const searchDate = dayjs(searchText).format("DD.MM.YYYY");
            return readingDate === searchDate;
         });
@@ -39,9 +35,8 @@ export default function GetPressureReadingById({readings, onUpdate, onDelete}: R
             }else if(searchText && filteredReadings().length === 0){
                 return <p>reading with date not found</p>
             } else{
-                return readings
-                    .sort((a,b)=> new Date(b.date).getTime() - new Date(a.date).getTime())
-                    .map(reading =>(
+                const sortedReadings = readings.slice().sort((a,b)=> new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime())
+                return sortedReadings.map(reading =>(
                     <PressureCard key={reading.id}
                                   pressureReading={reading}
                                   onDelete={onDelete}
@@ -51,9 +46,6 @@ export default function GetPressureReadingById({readings, onUpdate, onDelete}: R
             }
 
     }
-
-
-
     return(
         <div className="search-field">
             <form onSubmit={handleSubmit}>

@@ -1,7 +1,8 @@
+
+
 export type PressureReading ={
-       id: string;
-        date: string;
-        time: string;
+        id: string;
+        dateTime: string;
         systolic: number;
         diastolic: number;
         bpm: number;
