@@ -2,6 +2,7 @@ import {PressureReading} from "../models/PressureReading.ts";
 import {ChangeEvent, FormEvent, useState} from "react";
 import PressureCard from "./PressureCard.tsx";
 import dayjs from "dayjs";
+import {Button} from "@mui/material";
 
 type PressureByIdProps ={
 readings: PressureReading[];
@@ -10,39 +11,51 @@ readings: PressureReading[];
 }
 export default function GetPressureReadingById({readings, onUpdate, onDelete}: Readonly<PressureByIdProps>){
     const [searchText, setSearchText] = useState("");
+    const [isReverseOrder, setIsReverseOrder] = useState(false);
+
+    function toggleOrder (){
+        setIsReverseOrder(!isReverseOrder)
+    }
 
     const handleSubmit =(event: FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
-        filteredReadings()
+        compareReadings()
     }
 
- function filteredReadings(): PressureReading[] {
+ function compareReadings(): PressureReading[] {
         return readings.filter((reading: PressureReading) => {
             const readingDate = dayjs(reading.dateTime).format("DD.MM.YYYY");
             const searchDate = dayjs(searchText).format("DD.MM.YYYY");
            return readingDate === searchDate;
         });
     }
-        const renderReading = ()=>{
-            if (filteredReadings().length > 0){
-                return filteredReadings().map((reading) =>(
+
+
+        const renderReadings = ()=>{
+            let sortedReadings = compareReadings();
+            if (sortedReadings.length === 0 && !searchText ){
+                sortedReadings = readings;
+            }
+            sortedReadings = sortedReadings.slice().sort((a, b) => {
+                if (isReverseOrder) {
+                    return new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime();
+                } else {
+                    return new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime();
+                }
+            });
+
+            if (sortedReadings.length > 0){
+                return sortedReadings.map((reading) =>(
                     <PressureCard key={reading.id}
                                   pressureReading={reading}
                                   onDelete={onDelete}
                                   onUpdate={onUpdate}
                     />
                 ));
-            }else if(searchText && filteredReadings().length === 0){
+            }else if(searchText && compareReadings().length === 0){
                 return <p>reading with date not found</p>
             } else{
-                const sortedReadings = readings.slice().sort((a,b)=> new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime())
-                return sortedReadings.map(reading =>(
-                    <PressureCard key={reading.id}
-                                  pressureReading={reading}
-                                  onDelete={onDelete}
-                                  onUpdate={onUpdate}
-                    />
-                ))
+                return <p>No readings available</p>
             }
 
     }
@@ -58,9 +71,17 @@ export default function GetPressureReadingById({readings, onUpdate, onDelete}: R
                 <button type="submit">submit</button>
             </form>
             <div className="reading-by-id">
-                <div>readings: </div>
-                {renderReading()}
-        </div>
+                <div>Sort:</div>
+                <Button
+                    variant="contained"
+                    onClick={toggleOrder}
+                >
+                    {isReverseOrder ? 'Oldest First' : 'Newest First'}
+                </Button>
+
+                <div>readings:</div>
+                {renderReadings()}
+            </div>
         </div>
     )
 }
