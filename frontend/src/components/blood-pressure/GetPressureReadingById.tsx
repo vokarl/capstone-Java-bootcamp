@@ -1,4 +1,4 @@
-import {PressureReading} from "../models/PressureReading.ts";
+import {PressureReading} from "../../models/pressure-reading.ts";
 import {ChangeEvent, FormEvent, useState} from "react";
 import PressureCard from "./PressureCard.tsx";
 import dayjs from "dayjs";

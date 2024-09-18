@@ -1,4 +1,4 @@
-import {PressureReading} from "../models/PressureReading.ts";
+import {PressureReading} from "../../models/pressure-reading.ts";
 import {Box, Button, Card, CardContent, styled, TextField, Typography} from "@mui/material";
 import dayjs, {Dayjs} from 'dayjs';
 import {useState} from "react";

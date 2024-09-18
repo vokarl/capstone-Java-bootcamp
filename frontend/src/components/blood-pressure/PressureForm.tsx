@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { PressureReading } from "../models/PressureReading.ts";
+import { PressureReading } from "../../models/pressure-reading.ts";
 import {Box, Button, styled, TextField} from "@mui/material";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import {LocalizationProvider} from "@mui/x-date-pickers";
@@ -36,7 +36,6 @@ export default function PressureForm({ onAddPressureForm  }: Readonly<PressureFo
             .then(response => {
                 onAddPressureForm(response.data);
                 setDateTime(null);
-
                 setSystolic(undefined);
                 setDiastolic(undefined);
                 setBpm(undefined);

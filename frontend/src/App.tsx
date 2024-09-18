@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
-import PressureReadingsList from './components/PressureReadingsList';
-import BloodWork from "./components/BloodWork.tsx";
+import PressureReadingsList from './components/blood-pressure/PressureReadingsList.tsx';
+import BloodWorkList from "./components/blood-work/BloodWorkList.tsx";
 import Layout from './components/Layout';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
@@ -26,7 +26,7 @@ function App() {
 
                 <Layout>
                     <Routes>
-                        <Route path="/blood-work" element={<BloodWork />} />
+                        <Route path="/blood-work" element={<BloodWorkList />} />
                         <Route path="/pressure-readings" element={<PressureReadingsList />} />
                     </Routes>
                 </Layout>

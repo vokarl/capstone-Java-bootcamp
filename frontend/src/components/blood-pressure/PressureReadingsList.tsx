@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {PressureReading} from "../models/PressureReading.ts";
+import {PressureReading} from "../../models/pressure-reading.ts";
 import  axios from "axios";
 import AddPressureForm from "./PressureForm.tsx";
 import GetPressureReadingById from "./GetPressureReadingById.tsx";

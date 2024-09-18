@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 
-@Document("bloodWorks") // so kann der collection name in mogodb geändert werden
+@Document("bloodWork")
 @With
 public record BloodWork(
         String id,
