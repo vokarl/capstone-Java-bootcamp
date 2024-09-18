@@ -1,14 +1,10 @@
-package de.trackyourhealth.backend;
-
-import lombok.With;
+package de.trackyourhealth.backend.bloodpressure;
 
 import java.time.Instant;
 
 
 
-@With
-public record PressureReading(
-        String id,
+public record PressureDTO(
         Instant dateTime,
         int systolic,
         int diastolic,

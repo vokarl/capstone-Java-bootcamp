@@ -1,5 +1,7 @@
-package de.trackyourhealth.backend;
+package de.trackyourhealth.backend.pressuretests;
 
+import de.trackyourhealth.backend.bloodpressure.PressureReading;
+import de.trackyourhealth.backend.bloodpressure.PressureReadingRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

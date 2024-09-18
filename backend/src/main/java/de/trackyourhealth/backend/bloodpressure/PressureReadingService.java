@@ -1,4 +1,4 @@
-package de.trackyourhealth.backend;
+package de.trackyourhealth.backend.bloodpressure;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
