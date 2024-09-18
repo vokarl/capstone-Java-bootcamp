@@ -99,23 +99,18 @@ class PressureReadingControllerTest {
     @DirtiesContext
     @Test
     void deletePressureReading_shouldReturnHttpNoContent_whenDeleteExistingPressureReading() throws Exception {
-     //GIVEN WHEN
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/blood-pressure")
-                        .contentType("application/json")
-                        .content("""
-                        {
-                            "id": "2024-001",
-                            "systolic": 120,
-                            "diastolic": 80,
-                            "timestamp": "2024-09-09T12:00:00"
-                        }
-                        """))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-        //THEN
+        //GIVEN
+        Instant now = Instant.now();
+        PressureReading pressureReadingToDelete = new PressureReading("2024-001", now, 120, 80, 75);
+        pressureReadingRepository.save(pressureReadingToDelete);
+
+        //WHEN
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/blood-pressure/2024-001")
-                        .contentType("application/json"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                //THEN
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
+
 
     @DirtiesContext
     @Test
