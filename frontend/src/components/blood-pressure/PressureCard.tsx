@@ -91,14 +91,15 @@ export default function PressureCard({pressureReading, onDelete, onUpdate}: Read
                     <Typography sx={styles.typography}>
                     Date/Time: {formattedDate.toString()}
                 </Typography>}
-                {isEditMode ?     <StyledBox>
+
+                {isEditMode ? <StyledBox>
                         <TextField
                             type="number"
                             value={updatedSystolic !== undefined ? updatedSystolic : ''}
-                            onChange={(event) => setUpdatedSystolic(event.target.value !== '' ? Number(event.target.value) : undefined)}
+                            onChange={(event) =>
+                                setUpdatedSystolic(event.target.value !== '' ? Number(event.target.value) : undefined)}
                             placeholder="Systolic"
                             required
-
                         />  </StyledBox>
                     :<Typography sx={styles.typography}>
                     Systolic: {pressureReading.systolic}

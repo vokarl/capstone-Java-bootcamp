@@ -62,7 +62,7 @@ export default function GetPressureReadingById({readings, onUpdate, onDelete}: R
     return(
         <div className="search-field">
             <form onSubmit={handleSubmit}>
-                <p>search:</p>
+                <p>search by date:</p>
                 <input
                     type="date"
                     value={searchText}

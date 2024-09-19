@@ -27,8 +27,6 @@ useEffect(()=>{
     const handleReading = (newReading: PressureReading)=> {
         setReadings(prevReadings=> [...prevReadings, newReading]);
     }
-
-
     const handleDelete = (pressureId: string)=>{
         axios.delete(`api/blood-pressure/${pressureId}`)
             .then(()=>{
