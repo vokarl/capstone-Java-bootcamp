@@ -1,10 +1,11 @@
-import {PressureReading} from "../models/PressureReading.ts";
-import {Box, Button, Card, CardContent, styled, TextField, Typography} from "@mui/material";
+import {PressureReading} from "../../models/pressure-reading.ts";
+import {Button, Card, CardContent, TextField, Typography} from "@mui/material";
 import dayjs, {Dayjs} from 'dayjs';
 import {useState} from "react";
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DateTimePicker} from "@mui/x-date-pickers/DateTimePicker";
+import {StyledBox, StyledDateBox, styles} from "../Layout.tsx";
 
 type PressureCardProps ={
     pressureReading: PressureReading;
@@ -91,14 +92,15 @@ export default function PressureCard({pressureReading, onDelete, onUpdate}: Read
                     <Typography sx={styles.typography}>
                     Date/Time: {formattedDate.toString()}
                 </Typography>}
-                {isEditMode ?     <StyledBox>
+
+                {isEditMode ? <StyledBox>
                         <TextField
                             type="number"
                             value={updatedSystolic !== undefined ? updatedSystolic : ''}
-                            onChange={(event) => setUpdatedSystolic(event.target.value !== '' ? Number(event.target.value) : undefined)}
+                            onChange={(event) =>
+                                setUpdatedSystolic(event.target.value !== '' ? Number(event.target.value) : undefined)}
                             placeholder="Systolic"
                             required
-
                         />  </StyledBox>
                     :<Typography sx={styles.typography}>
                     Systolic: {pressureReading.systolic}
@@ -141,31 +143,7 @@ export default function PressureCard({pressureReading, onDelete, onUpdate}: Read
 
 
 
-const styles = {
-    typography: {
-        fontSize: "14px",
-        width: '150px',
-        textAlign: 'center'
-    }
-};
-const StyledDateBox = styled(Box)(({ theme }) => ({
-    display: "flex",
-    gap: "16px",
-    backgroundColor: theme.palette.background.paper,
-    padding: "4px",
-    marginBottom: "20px",
-    borderRadius: "8px",
 
-}));
-const StyledBox = styled(Box)(({ theme }) => ({
-    display: "flex",
-    gap: "16px",
-    backgroundColor: theme.palette.background.paper,
-    padding: "4px",
-    marginBottom: "20px",
-    borderRadius: "8px",
-
-}));
 
 
 

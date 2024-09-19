@@ -1,10 +1,6 @@
-package de.trackyourhealth.backend;
-
+package de.trackyourhealth.backend.bloodpressure;
 import lombok.With;
-
 import java.time.Instant;
-
-
 
 @With
 public record PressureReading(

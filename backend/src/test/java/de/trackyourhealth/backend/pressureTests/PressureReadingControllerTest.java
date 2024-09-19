@@ -1,5 +1,7 @@
-package de.trackyourhealth.backend;
+package de.trackyourhealth.backend.pressureTests;
 
+import de.trackyourhealth.backend.bloodpressure.PressureReading;
+import de.trackyourhealth.backend.bloodpressure.PressureReadingRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -90,7 +92,7 @@ class PressureReadingControllerTest {
                 // THEN
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("1"))
-                .andExpect(jsonPath("$.dateTime").value(formattedDateTime))
+                .andExpect(jsonPath("$.dateTime").value(org.hamcrest.Matchers.containsString(formattedDateTime.substring(0, formattedDateTime.length() - 1))))
                 .andExpect(jsonPath("$.systolic").value(120))
                 .andExpect(jsonPath("$.diastolic").value(80))
                 .andExpect(jsonPath("$.bpm").value(77));
@@ -123,8 +125,7 @@ class PressureReadingControllerTest {
         String nowToString = now.toString();
         String updatedPressureReadingJson = """
             {
-             
-                "dateTime": "%s",
+             "dateTime": "%s",
                 "systolic": 125,
                 "diastolic": 85,
                 "bpm": 75

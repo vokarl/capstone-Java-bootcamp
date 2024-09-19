@@ -1,4 +1,4 @@
-import {PressureReading} from "../models/PressureReading.ts";
+import {PressureReading} from "../../models/pressure-reading.ts";
 import {ChangeEvent, FormEvent, useState} from "react";
 import PressureCard from "./PressureCard.tsx";
 import dayjs from "dayjs";
@@ -62,7 +62,7 @@ export default function GetPressureReadingById({readings, onUpdate, onDelete}: R
     return(
         <div className="search-field">
             <form onSubmit={handleSubmit}>
-                <p>search:</p>
+                <p>search by date:</p>
                 <input
                     type="date"
                     value={searchText}

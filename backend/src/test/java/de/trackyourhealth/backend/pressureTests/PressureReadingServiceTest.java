@@ -1,5 +1,9 @@
-package de.trackyourhealth.backend;
+package de.trackyourhealth.backend.pressureTests;
 
+import de.trackyourhealth.backend.bloodpressure.PressureDTO;
+import de.trackyourhealth.backend.bloodpressure.PressureReading;
+import de.trackyourhealth.backend.bloodpressure.PressureReadingRepository;
+import de.trackyourhealth.backend.bloodpressure.PressureReadingService;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
