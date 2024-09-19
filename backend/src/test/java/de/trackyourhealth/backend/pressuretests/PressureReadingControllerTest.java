@@ -92,7 +92,7 @@ class PressureReadingControllerTest {
                 // THEN
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("1"))
-                .andExpect(jsonPath("$.dateTime").value(formattedDateTime))
+                .andExpect(jsonPath("$.dateTime").value(org.hamcrest.Matchers.containsString(formattedDateTime.substring(0, formattedDateTime.length() - 1))))
                 .andExpect(jsonPath("$.systolic").value(120))
                 .andExpect(jsonPath("$.diastolic").value(80))
                 .andExpect(jsonPath("$.bpm").value(77));

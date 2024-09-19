@@ -1,11 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
 import { PressureReading } from "../../models/pressure-reading.ts";
-import {Box, Button, styled, TextField} from "@mui/material";
+import {TextField} from "@mui/material";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {Dayjs} from "dayjs";
+import {StyledBox, StyledButton, StyledDateBox} from "../Layout.tsx";
 
 interface PressureFormProps {
     onAddPressureForm: (newReading: PressureReading) => void;
@@ -94,34 +95,5 @@ export default function PressureForm({ onAddPressureForm  }: Readonly<PressureFo
         </form>
     );
 }
-
-const StyledDateBox = styled(Box)(({ theme }) => ({
-    display: "flex",
-    gap: "16px",
-    backgroundColor: theme.palette.background.paper,
-    padding: "4px",
-    marginBottom: "20px",
-    borderRadius: "8px",
-
-}));
-const StyledBox = styled(Box)(({ theme }) => ({
-    display: "flex",
-    gap: "16px",
-    backgroundColor: theme.palette.background.paper,
-    padding: "4px",
-    marginBottom: "20px",
-    borderRadius: "8px",
-
-}));
-const StyledButton = styled(Button)({
-   color: "white",
-    padding: "4px 8px",
-    minHeight: "32px",
-    height: "32px",
-    minWidth: "32px",
-    width: "32px",
-
-})
-
 
 

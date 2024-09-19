@@ -1,10 +1,11 @@
 import {PressureReading} from "../../models/pressure-reading.ts";
-import {Box, Button, Card, CardContent, styled, TextField, Typography} from "@mui/material";
+import {Button, Card, CardContent, TextField, Typography} from "@mui/material";
 import dayjs, {Dayjs} from 'dayjs';
 import {useState} from "react";
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DateTimePicker} from "@mui/x-date-pickers/DateTimePicker";
+import {StyledBox, StyledDateBox, styles} from "../Layout.tsx";
 
 type PressureCardProps ={
     pressureReading: PressureReading;
@@ -142,31 +143,7 @@ export default function PressureCard({pressureReading, onDelete, onUpdate}: Read
 
 
 
-const styles = {
-    typography: {
-        fontSize: "14px",
-        width: '150px',
-        textAlign: 'center'
-    }
-};
-const StyledDateBox = styled(Box)(({ theme }) => ({
-    display: "flex",
-    gap: "16px",
-    backgroundColor: theme.palette.background.paper,
-    padding: "4px",
-    marginBottom: "20px",
-    borderRadius: "8px",
 
-}));
-const StyledBox = styled(Box)(({ theme }) => ({
-    display: "flex",
-    gap: "16px",
-    backgroundColor: theme.palette.background.paper,
-    padding: "4px",
-    marginBottom: "20px",
-    borderRadius: "8px",
-
-}));
 
 
 
