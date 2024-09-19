@@ -1,4 +1,4 @@
-package de.trackyourhealth.backend.pressuretests;
+package de.trackyourhealth.backend.pressureTests;
 
 import de.trackyourhealth.backend.bloodpressure.PressureReading;
 import de.trackyourhealth.backend.bloodpressure.PressureReadingRepository;
@@ -125,8 +125,7 @@ class PressureReadingControllerTest {
         String nowToString = now.toString();
         String updatedPressureReadingJson = """
             {
-             
-                "dateTime": "%s",
+             "dateTime": "%s",
                 "systolic": 125,
                 "diastolic": 85,
                 "bpm": 75

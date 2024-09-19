@@ -12,7 +12,7 @@ import java.util.List;
 public class BloodWorkController {
     private final BloodWorkService bloodWorkService;
 
-    @ GetMapping
+    @GetMapping
     List<BloodWork> getAllValues(){
         return bloodWorkService.findAllValues();
     }

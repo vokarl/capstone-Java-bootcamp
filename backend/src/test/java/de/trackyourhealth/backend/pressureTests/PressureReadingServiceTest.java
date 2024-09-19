@@ -1,4 +1,4 @@
-package de.trackyourhealth.backend.pressuretests;
+package de.trackyourhealth.backend.pressureTests;
 
 import de.trackyourhealth.backend.bloodpressure.PressureDTO;
 import de.trackyourhealth.backend.bloodpressure.PressureReading;
