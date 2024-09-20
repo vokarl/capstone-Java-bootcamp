@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 import { styled } from '@mui/material/styles';
-import {Box, Drawer, List, ListItem, ListItemText, Typography, Link, Button} from '@mui/material';
+import {Box, Drawer, List, ListItem, ListItemText, Typography, Link} from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import {StyledTypography} from "./Styles.ts";
 
 interface LayoutProps {
     children: ReactNode;
@@ -61,42 +62,3 @@ export default function Layout({ children }: Readonly<LayoutProps>): JSX.Element
     );
 }
 
-export const StyledTypography = styled(Typography)({
-    fontSize: '3.5rem',
-    alignItems: 'center',
-});
-
-export const StyledDateBox = styled(Box)(({ theme }) => ({
-    display: "flex",
-    gap: "16px",
-    backgroundColor: theme.palette.background.paper,
-    padding: "4px",
-    marginBottom: "20px",
-    borderRadius: "8px",
-}));
-
-export const styles = {
-    typography: {
-        fontSize: '1rem',
-        fontWeight: 'bold',
-    },
-};
-
-export const StyledBox = styled(Box)(({ theme }) => ({
-    display: "flex",
-    gap: "16px",
-    backgroundColor: theme.palette.background.paper,
-    padding: "4px",
-    marginBottom: "20px",
-    borderRadius: "8px",
-
-}));
-export const StyledButton = styled(Button)({
-    color: "white",
-    padding: "4px 8px",
-    minHeight: "32px",
-    height: "32px",
-    minWidth: "32px",
-    width: "32px",
-
-})

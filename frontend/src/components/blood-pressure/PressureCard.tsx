@@ -5,7 +5,7 @@ import {useState} from "react";
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DateTimePicker} from "@mui/x-date-pickers/DateTimePicker";
-import {StyledBox, StyledDateBox, styles} from "../Layout.tsx";
+import {StyledBox, StyledDateBox, styles} from "../Styles.ts";
 
 type PressureCardProps ={
     pressureReading: PressureReading;
@@ -59,25 +59,27 @@ export default function PressureCard({pressureReading, onDelete, onUpdate}: Read
                 alignItems:"center",
                 gap: 1}}>
 
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={toggleEdit}>
-                    edit
-                </Button>
-                <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleSave}>
-                  save
-                </Button>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => onDelete(pressureReading.id)}
-                >
-                    del.
-                </Button>
+               <StyledBox>
+                   <Button
+                       variant="contained"
+                       color="primary"
+                       onClick={toggleEdit}>
+                       edit
+                   </Button>
+                   <Button
+                       variant="contained"
+                       color="primary"
+                       onClick={handleSave}>
+                       save
+                   </Button>
+                   <Button
+                       variant="contained"
+                       color="primary"
+                       onClick={() => onDelete(pressureReading.id)}
+                   >
+                       del.
+                   </Button>
+               </StyledBox>
                 {isEditMode ?
                     <StyledDateBox>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>

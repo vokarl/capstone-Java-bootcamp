@@ -5,8 +5,8 @@ import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DateTimePicker} from "@mui/x-date-pickers/DateTimePicker";
 import axios from "axios";
-import {StyledBox, StyledButton, StyledDateBox} from "../Layout.tsx";
 import {TextField} from "@mui/material";
+import {StyledBox, StyledButton, StyledDateBox} from "../Styles.ts";
 type BloodWorkFormProps ={
     onAddBloodWorkForm: (newBloodWork: BloodWork) => void;
 }
