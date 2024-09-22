@@ -13,7 +13,7 @@
 ## Technologies
 
 - **Frontend**: React.js
-- **Backend**: Node.js with Express
+- **Backend**: Java
 - **Database**: MongoDB
 - **Deployment**: Docker
 

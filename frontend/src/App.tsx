@@ -4,6 +4,7 @@ import BloodWorkList from "./components/blood-work/BloodWorkList.tsx";
 import Layout from './components/Layout';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
+import LineChart from "./components/LineChart.tsx";
 
 
 
@@ -26,8 +27,10 @@ function App() {
 
                 <Layout>
                     <Routes>
+                        <Route path="/" element={<LineChart />} />
                         <Route path="/blood-work" element={<BloodWorkList />} />
                         <Route path="/pressure-readings" element={<PressureReadingsList />} />
+
                     </Routes>
                 </Layout>
         </ThemeProvider>

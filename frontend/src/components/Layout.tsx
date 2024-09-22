@@ -38,6 +38,15 @@ export default function Layout({ children }: Readonly<LayoutProps>): JSX.Element
                             <ListItem>
                                 <ListItemText>
                                     <Typography variant="h5" color="primary">
+                                        <Link component={RouterLink} to="/" color="inherit">
+                                            Home
+                                        </Link>
+                                    </Typography>
+                                </ListItemText>
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText>
+                                    <Typography variant="h5" color="primary">
                                         <Link component={RouterLink} to="/pressure-readings" color="inherit">
                                              Pressure Readings
                                         </Link>
