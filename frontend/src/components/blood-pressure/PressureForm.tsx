@@ -48,7 +48,7 @@ export default function PressureForm({ onAddPressureForm  }: Readonly<PressureFo
     };
 
     return (
-        <form onSubmit={handleSubmit} style={{display: "flex", flexDirection: "row", gap: "6px"}}>
+        <form onSubmit={handleSubmit} style={{display: "flex", flexDirection: "row", gap: "6px", width: "80%"}}>
             <StyledDateBox>
                 <StyledButton type="submit" variant="contained" color="primary" size="small">
                     +</StyledButton>

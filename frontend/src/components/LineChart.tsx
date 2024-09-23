@@ -1,202 +1,166 @@
-
-
-
 import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
+import { PressureReading } from "../models/pressure-reading.ts";
 
-const LineChart: React.FC = () => {const data = [
-    {
-        id: 'Systolic',
-        data: [
-            { x: new Date('2023-09-01'), y: 120 },
-            { x: new Date('2023-09-02'), y: 130 },
-            { x: new Date('2023-09-03'), y: 150 },
-            { x: new Date('2023-09-04'), y: 150 }
-        ],
-    },
-    {
-        id: 'Diastolic',
-        data: [
-            { x: new Date('2023-09-01'), y: 90 },
-            { x: new Date('2023-09-02'), y: 100 },
-            { x: new Date('2023-09-03'), y: 110 }
-        ],
-    },
-    {
-        id: 'Bpm',
-        data: [
-            { x: new Date('2023-09-01'), y: 180 },
-            { x: new Date('2023-09-02'), y: 160 },
-            { x: new Date('2023-09-03'), y: 170 }
-        ],
-    }
-];
 
+type LineChartProps = {
+    readings: PressureReading[];
+
+}
+
+const LineChart: React.FC<LineChartProps> = ({ readings }) => {
+
+    const currentYear = readings.length > 0
+        ? new Date(readings[0].dateTime).getFullYear()
+        : new Date().getFullYear();
+
+    const data1 = [
+        { id: 'Bpm', data: readings.map(reading => ({
+                x: new Date(reading.dateTime).toISOString().split('T')[0],
+                y: reading.bpm,
+            }))},
+        { id: 'Diastolic', data: readings.map(reading => ({
+                x: new Date(reading.dateTime).toISOString().split('T')[0],
+                y: reading.diastolic,
+            }))},
+        { id: 'Systolic', data: readings.map(reading => ({
+                x: new Date(reading.dateTime).toISOString().split('T')[0],
+                y: reading.systolic,
+            }))},
+    ];
+
+   /* const data2 = [
+        { id: 'gfr', data: bloodWorkValues.map(bloodwork => ({
+                x: new Date(bloodwork.dateTime).toISOString().split('T')[0],
+                y:bloodwork.gfr
+            }))},
+        { id: 'crp', data: bloodWorkValues.map(bloodwork => ({
+                x: new Date(bloodwork.dateTime).toISOString().split('T')[0],
+                y: bloodwork.crp,
+            }))},
+    ];*/
 
     return (
-        <div style={{ height: '400px' }}>
-            <ResponsiveLine
-                data={data}
-                xScale={{
-                    type: 'time',  // Skalierung der X-Achse als Datum
-                    format: '%Y-%m-%d',  // Datumsformat
-                    precision: 'day',  // Präzision bis zum Tag
-                }}
-                xFormat="time:%Y-%m-%d"  // Formatierung der X-Achse
-                yScale={{
-                    type: 'linear',
-                    min: 0,
-                    max: 200,  // Begrenzung der Y-Achse auf 0 bis 200
-                }}
-                axisBottom={{
-                    format: '%b %d',  // Format für das Datum auf der X-Achse (Monat Tag)
-                    tickValues: 'every 1 day',  // Ticks für jeden Tag
-                    legend: 'Date',  // Label der X-Achse
-                    legendPosition: 'middle',
-                    legendOffset: 36,
-                }}
-                axisLeft={{
-                    tickValues: 10,  // Teilung der Y-Achse in 10 Einheiten
-                    legend: 'Values',  // Label der Y-Achse
-                    legendPosition: 'middle',
-                    legendOffset: -40,
-                }}
-                colors={{ scheme: 'nivo' }}  // Farbpalette für die Linien
-                lineWidth={2}  // Breite der Linien
-                pointSize={10}  // Größe der Punkte
-                pointColor={{ theme: 'background' }}
-                pointBorderWidth={2}
-                pointBorderColor={{ from: 'serieColor' }}
-                useMesh={true}  // Ermöglicht das Interagieren mit den Punkten
-                //Margin
-                margin={{ top: 50, right: 90, bottom: 60, left: 50 }}
-                legends={[
-                    {
-                        anchor: 'top-right',  // Legende außerhalb der Chart
-                        direction: 'column',  // Legende in Spalten anordnen
-                        translateX: 120,
-                        translateY: -30,
-                        itemsSpacing: 2,
-                        itemWidth: 100,
-                        itemHeight: 20,
-                        symbolSize: 12,
-                        symbolShape: 'circle',  // Form der Symbole
-                        effects: [
-                            {
-                                on: 'hover',  // Interaktion bei Hover
-                                style: {
-                                    itemOpacity: 1
-                                }
-                            }
-                        ]
-                    }
-                ]}
-            />
+        <div>
+            <div style={{ height: '400px' }}>
+                <ResponsiveLine
+                    data={data1}
+                    xScale={{
+                        type: 'time',
+                        format: '%Y-%m-%d',
+                        precision: 'day',
+                    }}
+                    xFormat="time:%Y-%m-%d"
+                    yScale={{
+                        type: 'linear',
+                        min: 0,
+                        max: 200,
+                    }}
+                    axisBottom={{
+                        format: '%b %d',
+                        tickValues: 'every 1 month',
+                        legend: currentYear.toString(),
+                        legendPosition: 'middle',
+                        legendOffset: 40,
+                    }}
+                    axisLeft={{
+                        tickValues: 10,
+                        legend: '',
+                        legendPosition: 'middle',
+                        legendOffset: -40,
+                    }}
+                    colors={{ scheme: 'nivo' }}
+                    lineWidth={2}
+                    pointSize={10}
+                    pointColor={{ theme: 'background' }}
+                    pointBorderWidth={2}
+                    pointBorderColor={{ from: 'serieColor' }}
+                    useMesh={true}
+                    margin={{ top: 50, right: 90, bottom: 60, left: 50 }}
+                    legends={[
+                        {
+                            anchor: 'top-right',
+                            direction: 'column',
+                            translateX: 120,
+                            translateY: -30,
+                            itemsSpacing: 2,
+                            itemWidth: 100,
+                            itemHeight: 20,
+                            symbolSize: 12,
+                            symbolShape: 'circle',
+                            effects: [
+                                {
+                                    on: 'hover',
+                                    style: {
+                                        itemOpacity: 1,
+                                    },
+                                },
+                            ],
+                        },
+                    ]}
+                />
+            </div>
+
+          {/*  <div style={{ height: '400px' }}>
+                <ResponsiveLine
+                    data={data2}
+                    xScale={{
+                        type: 'time',
+                        format: '%Y-%m-%d',
+                        precision: 'day',
+                    }}
+                    xFormat="time:%Y-%m-%d"
+                    yScale={{
+                        type: 'linear',
+                        min: 0,
+                        max: 200,
+                    }}
+                    axisBottom={{
+                        format: '%b %d',
+                        tickValues: 'every 1 month',
+                        legend: currentYear.toString(),
+                        legendPosition: 'middle',
+                        legendOffset: 40,
+                    }}
+                    axisLeft={{
+                        tickValues: 10,
+                        legend: '',
+                        legendPosition: 'middle',
+                        legendOffset: -40,
+                    }}
+                    colors={{ scheme: 'nivo' }}
+                    lineWidth={2}
+                    pointSize={10}
+                    pointColor={{ theme: 'background' }}
+                    pointBorderWidth={2}
+                    pointBorderColor={{ from: 'serieColor' }}
+                    useMesh={true}
+                    margin={{ top: 50, right: 90, bottom: 60, left: 50 }}
+                    legends={[
+                        {
+                            anchor: 'top-right',
+                            direction: 'column',
+                            translateX: 120,
+                            translateY: -30,
+                            itemsSpacing: 2,
+                            itemWidth: 100,
+                            itemHeight: 20,
+                            symbolSize: 12,
+                            symbolShape: 'circle',
+                            effects: [
+                                {
+                                    on: 'hover',
+                                    style: {
+                                        itemOpacity: 1,
+                                    },
+                                },
+                            ],
+                        },
+                    ]}
+                />
+            </div>*/}
         </div>
     );
 };
 
 export default LineChart;
-
-
-
-
-
-/*
-import React from 'react';
-import { ResponsiveLine } from '@nivo/line';
-
-const LineChart: React.FC = () => {const data = [
-    {
-        id: 'Lie 1',
-        data: [
-            { x: new Date('2023-09-01'), y: 120 },
-            { x: new Date('2023-09-02'), y: 130 },
-            { x: new Date('2023-09-03'), y: 150 }
-        ],
-    },
-    {
-        id: 'Line 2',
-        data: [
-            { x: new Date('2023-09-01'), y: 90 },
-            { x: new Date('2023-09-02'), y: 100 },
-            { x: new Date('2023-09-03'), y: 110 }
-        ],
-    },
-    {
-        id: 'Line 3',
-        data: [
-            { x: new Date('2023-09-01'), y: 180 },
-            { x: new Date('2023-09-02'), y: 160 },
-            { x: new Date('2023-09-03'), y: 170 }
-        ],
-    }
-];
-
-
-    return (
-        <div style={{ height: '400px' }}>
-            <ResponsiveLine
-                data={data}
-                xScale={{
-                    type: 'time',  // Skalierung der X-Achse als Datum
-                    format: '%Y-%m-%d',  // Datumsformat
-                    precision: 'day',  // Präzision bis zum Tag
-                }}
-                xFormat="time:%Y-%m-%d"  // Formatierung der X-Achse
-                yScale={{
-                    type: 'linear',
-                    min: 0,
-                    max: 200,  // Begrenzung der Y-Achse auf 0 bis 200
-                }}
-                axisBottom={{
-                    format: '%b %d',  // Format für das Datum auf der X-Achse (Monat Tag)
-                    tickValues: 'every 1 day',  // Ticks für jeden Tag
-                    legend: 'Date',  // Label der X-Achse
-                    legendPosition: 'middle',
-                    legendOffset: 36,
-                }}
-                axisLeft={{
-                    tickValues: 10,  // Teilung der Y-Achse in 10 Einheiten
-                    legend: 'Values',  // Label der Y-Achse
-                    legendPosition: 'middle',
-                    legendOffset: -40,
-                }}
-                colors={{ scheme: 'nivo' }}  // Farbpalette für die Linien
-                lineWidth={2}  // Breite der Linien
-                pointSize={10}  // Größe der Punkte
-                pointColor={{ theme: 'background' }}
-                pointBorderWidth={2}
-                pointBorderColor={{ from: 'serieColor' }}
-                useMesh={true}  // Ermöglicht das Interagieren mit den Punkten
-                margin={{ top: 50, right: 60, bottom: 60, left: 80 }}
-                legends={[
-                    {
-                        anchor: 'top-right',  // Legende außerhalb der Chart
-                        direction: 'column',  // Legende in Spalten anordnen
-                        translateX: 120,
-                        translateY: -30,
-                        itemsSpacing: 2,
-                        itemWidth: 100,
-                        itemHeight: 20,
-                        symbolSize: 12,
-                        symbolShape: 'circle',  // Form der Symbole
-                        effects: [
-                            {
-                                on: 'hover',  // Interaktion bei Hover
-                                style: {
-                                    itemOpacity: 1
-                                }
-                            }
-                        ]
-                    }
-                ]}
-            />
-        </div>
-    );
-};
-
-export default LineChart;
-
-
-*/

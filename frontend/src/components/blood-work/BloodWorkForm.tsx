@@ -67,7 +67,7 @@ export default function BloodWorkForm({onAddBloodWorkForm}:Readonly<BloodWorkFor
               required
 
           />  </StyledBox>
-      <StyledBox sx={{ display: "flex", gap: "16px" }}>
+      <StyledBox >
 
           <TextField
               type="number"
